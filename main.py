@@ -1,1103 +1,536 @@
+import csv
+
+# lists
+make = ['Honda','Toyota']
+model = ['Civic','CH-R']
+year = ['2019','2020']
+mileage = [58000,25000]
+oldowner = ['Chamika','dilip']
+askprice = [15000,20000]
+sellprice = [20000,22500]
+available = ['On Sale','On Sale']
+buyername = [0]
+buyername1 = ['']
+buyertele = [0]
+buyertele1 = ['']
+telecopy = ['']
+buyeraddress = ['']
+buyertest = [0]
+buyermaintain = ['' for x in range(1, 1000)]
+buyermaintain1 = ['No Report Yet' for x in range(1, 1000)]
+maintaincost = [0 for x in range(1, 1000)]
+count = [0]
+appointment = ['Pending' for x in range(1, 1000)]
+carid = ['']
+profit = [[0], [], [], [], [], [], [], [], [], [], [], [], []]
+profit1 = [[0], [], [], [], [], [], [], [], [], [], [], [], []]
+
+
+def prof(t):
+    total = 0
+    for k in t:
+        if type(k) == list:  # checking i is list
+            total = total + prof(k)
+        else:
+            total += k
+    return total
+
+
 while True:
-    def options(option=None, position=None):
-        position = int(
-            input("\t1.Admin\n\t2.Customer\n\t3.Owner\n\t4.Technician\nPlease insert your position Number:\n"))
-        if position == 1:
-            admin()
-        elif position == 2:
-            customer()
-        elif position == 3:
-            owner()
-        elif position == 4:
-            technician()
-        else:
-            print("Invalid input")
-
-
-    def admin():
-        print("1. Enter New Car Details")
-        print("2. Edit Car Information")
-        print("3. Change Car Status")
-        print("4. Check Appointments")
-        print("5. Approve Customer Requests")
-        tasks = int(input("Choose an option: "))
-
-        if tasks == 1:
-            add_new_car()
-        elif tasks == 2:
-            edit_car_info()
-        elif tasks == 3:
-            change_car_status()
-        elif tasks == 4:
-            check_appointments()
-        elif tasks == 5:
-            allow_test_drives()
-        else:
-            print("Enter a valid input")
-
-
-    def add_new_car():
-        car_details = open("Car Details.txt", "a")
-
-        index = input("Index Number: ")
-        the_make = input("The make: ").capitalize()
-        model = input("Model: ").capitalize()
-        mileage = input("Mileage: ")
-        colour = input("Colour: ").capitalize()
-        year = input("Year: ")
-        condition = input("Condition: ").capitalize()
-        car_states = input("Car Status: ").capitalize()
-
-        if len(index and the_make and model and mileage and colour and year and condition and car_states) < 1:
-            print("Something went wrong. Please fill all the details and try again")
-
-        else:
-            if car_states == "available" or "sold":
-                car_details.write(index + " , " + the_make + " , " + model + " , " + mileage + " , " + colour
-                                  + " , " + year + " , " + condition + " , " + car_states + "\n")
-                print("The new car details successfully added!")
-
+    # MAIN MENU
+    print('1 - i\'m from admin')
+    print('2 - i\'m a customer')
+    print('3 - i\'m from technical division')
+    print('4 - i\'m a owner')
+    User_Choice = input(
+        '------------------------------------------------------\nPlease Enter your Choice from one of '
+        'the above options|- ')
+    if User_Choice == "1":
+        # ADMIN MENU
+        print('Choice 1: Add Vehicle to Inventory')
+        print('Choice 2: Remove Vehicle from Inventory')
+        print('Choice 3: View Current Inventory')
+        print('Choice 4: Edit Vehicle Inventory')
+        print('Choice 5: Export Current Car Inventory')
+        print('Choice 6: Export Buyer Data')
+        print('Choice 7: View Requested Test Drives')
+        print('Choice 8: Give Appointments For Test Drives')
+        print('Choice 9: View Exported Data')
+        print('Choice 10: Confirm Deal')
+        print('Choice 11: Main Menu')
+        userchoice = input(
+            '------------------------------------------------------\nPlease Enter your Choice from '
+            'one of '
+            'the above options|- ')
+        if userchoice == "1":
+            # ADD CAR TO INVENTORY
+            make.append(input(" Make -"))
+            model.append(input(" Model -"))
+            year.append(int(input(" Year -")))
+            mileage.append(int(input(" Mileage -")))
+            oldowner.append(input(" Old owner -"))
+            x = int(input(" Asking Price -"))
+            askprice.append(x)
+            y = int(input(" Selling Price -"))
+            sellprice.append(y)
+            available.append('On Sale')
+            # add a vehicle
+        elif userchoice == '2':
+            # DELETE A CAR
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            Products = int(input('Please enter the number associated with the vehicle to be removed: '))
+            if Products - 1 > len(model):
+                print('This is an invalid number')
             else:
-                print("Please enter a valid input for car status.")
-
-        owner_info = open("Owner Information.txt", "a")
-
-        owner_name = input("Owner information: \n\tOwner Name: ").capitalize()
-        owner_contact = input("\tContact number: ")
-        owner_city = input("\tCity: ").capitalize()
-
-        if len(owner_name and owner_contact and owner_city) < 1:
-            print("Please fill all the details and try again")
-
-        else:
-            owner_info.write(index + " , " + owner_name + " , " + owner_contact + " , " + owner_city + "\n")
-            print("Owner Information Successfully added!")
-
-        pricing_info = open("Car Pricing Details.txt", "a")
-
-        asking_price = input("Asking Price: Rs:")
-        selling_price = input("Selling Price: Rs:")
-
-        if len(asking_price and selling_price) < 1:
-            print("Please fill all the details and try again")
-
-        else:
-            pricing_info.write(index + " , " + asking_price + " , " + selling_price + "\n")
-            print("Pricing information Successfully added!")
-
-
-    def edit_car_info():
-        print("1. The make: ")
-        print("2. Model: ")
-        print("3. Mileage: ")
-        print("4. Colour: ")
-        print("5. Year: ")
-        print("6. Condition: ")
-        print("7. Owner Name: ")
-        print("8. Owner Contact Number: ")
-        print("9.Owner City: ")
-        print("10.Asking Price: ")
-        print("11.Selling Price: ")
-
-        record = int(input("Enter the record number that you want to edit: "))
-
-        if record == 1:
-            make()
-        elif record == 2:
-            model()
-        elif record == 3:
-            mileage()
-        elif record == 4:
-            colour()
-        elif record == 5:
-            year()
-        elif record == 6:
-            condition()
-        elif record == 7:
-            owner_name()
-        elif record == 8:
-            owner_contact()
-        elif record == 9:
-            owner_city()
-        elif record == 10:
-            asking_price()
-        elif record == 11:
-            selling_price()
-        else:
-            print("Please enter a valid input")
-            edit_car_info()
-
-
-    def make():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_make = dict(zip(ind, tm))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_make[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_make[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    make()
-        except:
-            print("index number doesn't exist")
-
-
-    def model():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_model = dict(zip(ind, mo))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_model[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_model[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    model()
-        except:
-            print("index number doesn't exist")
-
-
-    def mileage():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_mileage = dict(zip(ind, mi))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_mileage[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_mileage[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    mileage()
-        except:
-            print("index number doesn't exist")
-
-
-    def colour():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_colour = dict(zip(ind, cl))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_colour[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_colour[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    colour()
-        except:
-            print("index number doesn't exist")
-
-
-    def year():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_year = dict(zip(ind, yr))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_year[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_year[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    year()
-        except:
-            print("index number doesn't exist")
-
-
-    def condition():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h)
-
-            index_with_condition = dict(zip(ind, con))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_condition[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_condition[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    condition()
-        except:
-            print("index number doesn't exist")
-
-
-    def owner_name():
-        owner_info = open("Owner Information.txt", "r")
-
-        ind = []
-        on = []
-        oc = []
-        oci = []
-
-        for i in owner_info:
-            a, b, c, d = i.split(" , ")
-            ind.append(a)
-            on.append(b)
-            oc.append(c)
-            oci.append(d)
-
-            index_with_o_name = dict(zip(ind, on))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_o_name[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_o_name[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Owner Information.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Owner Information.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    owner_name()
-        except:
-            print("index number doesn't exist")
-
-
-    def owner_contact():
-        owner_info = open("Owner Information.txt", "r")
-
-        ind = []
-        on = []
-        oc = []
-        oci = []
-
-        for i in owner_info:
-            a, b, c, d = i.split(" , ")
-            ind.append(a)
-            on.append(b)
-            oc.append(c)
-            oci.append(d)
-
-            index_with_o_contact = dict(zip(ind, oc))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_o_contact[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_o_contact[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Owner Information.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Owner Information.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    owner_name()
-        except:
-            print("index number doesn't exist")
-
-
-    def owner_city():
-        owner_info = open("Owner Information.txt", "r")
-
-        ind = []
-        on = []
-        oc = []
-        oci = []
-
-        for i in owner_info:
-            a, b, c, d = i.split(" , ")
-            ind.append(a)
-            on.append(b)
-            oc.append(c)
-            oci.append(d.strip())
-
-            index_with_o_city = dict(zip(ind, oci))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_o_city[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_o_city[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Owner Information.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Owner Information.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    owner_city()
-        except:
-            print("index number doesn't exist")
-
-
-    def asking_price():
-        pricing_info = open("Car Pricing Details.txt", "r")
-
-        ind = []
-        ap = []
-        sp = []
-
-        for i in pricing_info:
-            a, b, c = i.split(" , ")
-            ind.append(a)
-            ap.append(b)
-            sp.append(c)
-
-            index_with_ask = dict(zip(ind, ap))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_ask[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_ask[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Pricing Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Pricing Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    owner_name()
-        except:
-            print("index number doesn't exist")
-
-
-    def selling_price():
-        pricing_info = open("Car Pricing Details.txt", "r")
-
-        ind = []
-        ap = []
-        sp = []
-
-        for i in pricing_info:
-            a, b, c = i.split(" , ")
-            ind.append(a)
-            ap.append(b)
-            sp.append(c.strip())
-
-            index_with_selling = dict(zip(ind, sp))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_selling[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_selling[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Pricing Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Pricing Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    owner_name()
-        except:
-            print("index number doesn't exist")
-
-
-    def change_car_status():
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        tm = []
-        mo = []
-        mi = []
-        cl = []
-        yr = []
-        con = []
-        cs = []
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            ind.append(a)
-            tm.append(b)
-            mo.append(c)
-            mi.append(d)
-            cl.append(e)
-            yr.append(f)
-            con.append(g)
-            cs.append(h.strip())
-
-            index_with_status = dict(zip(ind, cs))
-
-        ask_index = input("Enter the index number of car that you want to edit the above car information: ")
-        try:
-            if index_with_status[ask_index]:
-                search_text = input("Enter the record that you want to edit: ")
-                if search_text == index_with_status[ask_index]:
-                    replace_text = input("Enter the new record to be replaced: ")
-                    with open("Car Details.txt", "r") as file:
-                        data = file.read()
-                        data = data.replace(search_text, replace_text)
-
-                    with open("Car Details.txt", "w") as file:
-                        file.write(data)
-
-                    print("Record replaced successfully!")
-                else:
-                    print("select correct index number")
-                    change_car_status()
-        except:
-            print("index number doesn't exist")
-
-
-    def check_appointments():
-        test_drive = open("Requests for Test Drive.txt", "r")
-
-        ind = []
-        name = []
-        id = []
-
-        for i in test_drive:
-            a, b, c, d = i.split(" , ")
-            ind.append(a)
-            name.append(b)
-            id.append(int(d.strip()))
-
-            if len(id) != 0:
-                print(len(id), "appointments requested."),
-                print("Car index number: " + a),
-                print("Requestor's name: " + b),
-                print("Requestor's contact number: " + c),
-                print("Requestor's NIC number: " + d)
-
-
-    def allow_test_drives():
-        test_drive = open("Requests for Test Drive.txt", "r")
-
-        allow_test_drive = open("Allow Test Drives.txt", "a")
-
-        not_allow_test_drive = open("Not allowed test drives.txt", "a")
-
-        nic = []
-        for j in test_drive:
-            a, b, c, d = j.split(" , ")
-            nic.append(int(d.strip()))
-
-        checking_id = int(input("Enter the requestor NIC number: "))
-        if checking_id in nic:
-            allow = int(input("Do you want to allow this test drive?\n\t1.Yes\n\t2.No\n"))
-            if allow == 1:
-                allow_test_drive.write(str(checking_id) + " , " + "YES")
-            elif allow == 2:
-                not_allow_test_drive.write(str(checking_id) + " , " + "NO")
-
-
-    def customer():
-        print("1. Display Car Details....")
-        print("2. Sort Cars")
-        print("3. Request Test Drive")
-        print("4. View Current Appointments Status")
-        print("5. Buy a car")
-        print("6. View Current Maintenance Information")
-
-        select = input("Enter your choice :")
-        if select == "1":
-            display_cars()
-        elif select == "2":
-            sorting()
-        elif select == "3":
-            request_test_drive()
-        elif select == "4":
-            appointment_status()
-        elif select == "5":
-            buy_car()
-        elif select == "6":
-            maintenance_status()
-        else:
-            print("Please enter a valid input.")
-
-
-    def display_cars():
-        av = "Available"
-        so = "Sold"
-
-        car_details = open("Car Details.txt", "r")
-
-        for i in car_details:
-            a, b, c, d, e, f, g, h = i.split(" , ")
-            if h.strip() == av:
-                print("Index Number: " + a)
-
-                print("Car Details")
-                print("\tThe make: " + b)
-                print("\tModel: " + c)
-                print("\tMileage: " + d)
-                print("\tColour: " + e)
-                print("\tYear: " + f)
-                print("\tCondition: " + g)
-
-                owner_info = open("Owner Information.txt", "r")
-
-                for j in owner_info:
-                    k, l, m, n = j.split(" , ")
-                    if k == a:
-                        print("Owner Details")
-                        print("\tOwner Name: " + l)
-                        print("\tOwner Contact Number: " + m)
-                        print("\tOwner City: " + n)
-
-                        pricing_info = open("Car Pricing Details.txt", "r")
-
-                        for r in pricing_info:
-                            o, p, q = r.split(" , ")
-                            if o == a:
-                                print("Pricing Details")
-                                print("\tSelling Price: " + q)
-
-            elif h == so:
-                print("SOLD")
-
-
-    def request_test_drive():
-        test_drive = open("Requests for Test Drive.txt", "a")
-
-        ind = input("Index Number of the car: ")
-        customer_name = input("Enter your name: ")
-        customer_contact = input("Enter your contact number: ")
-        customer_id = int(input("Enter your NIC number: "))
-
-        if len(ind and customer_name and customer_contact) < 1:
-            print("Something went wrong please try again.")
-        else:
-            test_drive.write(ind + " , " + customer_name + " , " + customer_contact + " , " + str(customer_id) + "\n")
-            print("Your request successfully added! You can check the status while the admin respond to your request.")
-
-
-    def appointment_status():
-        test_drive = open("Requests for Test Drive.txt", "r")
-        t_id = []
-
-        for k in test_drive:
-            p, q, r, s = k.split(" , ")
-            t_id.append(int(s.strip()))
-
-        allow_test_drive = open("Allow Test Drives.txt", "r")
-        a_id = []
-        a_allow = []
-
-        for i in allow_test_drive:
-            a, b = i.split(" , ")
-            a_id.append(int(a))
-            a_allow.append(b.strip())
-
-        not_allow_test_drive = open("Not allowed test drives.txt", "r")
-        n_id = []
-        n_allow = []
-
-        for j in not_allow_test_drive:
-            c, d = j.split(" , ")
-            n_id.append(int(c))
-            n_allow.append(d.strip())
-
-        checking_nic = int(input("Enter your NIC number: "))
-        if checking_nic in t_id:
-            if checking_nic in a_id:
-                print("Admin has provide you an appointment")
-            elif checking_nic in n_id:
-                print("Admin has rejected your test drive.")
+                del make[Products]
+                del model[Products]
+                del year[Products]
+                del mileage[Products]
+                del oldowner[Products]
+                del askprice[Products]
+                del sellprice[Products]
+                del available[Products]
+                print()
+                print('This vehicle has been removed')
+        elif userchoice == '3':
+            # CAR LIST
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
             else:
-                print("Your appointment is pending...")
-        else:
-            print("Please request an appointment")
-
-
-    def sorting():
-        print("1.Sort By Budget")
-        print("2.Sort By Mileage")
-        select1 = input("Enter choice :")
-        if select1 == "1":
-            sort_budget()
-        elif select1 == "2":
-            sort_mileage()
-
-
-    def sort_budget():
-        budget_min = int(input("Enter the minimum budget that you want to sort? Rs: "))
-        budget_max = int(input("Enter the maximum budget that you want to sort? Rs: "))
-
-        pricing_info = open("Car Pricing Details.txt", "r")
-
-        ind = []
-        sp = []
-
-        for i in pricing_info:
-            a, b, c = i.split(" , ")
-            ind.append(int(a))
-            sp.append(int(c.strip()))
-
-        for j in sp:
-            if budget_min <= j <= budget_max:
-                for k in ind:
-                    if sp.index(j) == ind.index(k):
-                        print(ind.index(k) + 1)
-                        av = "Available"
-                        so = "Sold"
-
-                        car_details = open("Car Details.txt", "r")
-
-                        for w in car_details:
-                            d, e, f, g, h, l, m, n = w.split(" , ")
-                            if str(ind.index(k) + 1) == d:
-                                if n.strip() == av:
-                                    print("Index Number: " + d)
-
-                                    print("Car Details")
-                                    print("\tThe make: " + e)
-                                    print("\tModel: " + f)
-                                    print("\tMileage: " + g)
-                                    print("\tColour: " + h)
-                                    print("\tYear: " + l)
-                                    print("\tCondition: " + m)
-
-                                    owner_info = open("Owner Information.txt", "r")
-
-                                    for x in owner_info:
-                                        s, t, u, v = x.split(" , ")
-                                        if s == d:
-                                            print("Owner Details")
-                                            print("\tOwner Name: " + t)
-                                            print("\tOwner Contact Number: " + u)
-                                            print("\tOwner City: " + v)
-
-                                            pricing_info = open("Car Pricing Details.txt", "r")
-
-                                            for y in pricing_info:
-                                                o, p, q = y.split(" , ")
-                                                if o == d:
-                                                    print("Pricing Details")
-                                                    print("\tSelling Price: " + q)
-
+                counter = 0
+                while counter < len(model):
+                    print('CAR ID', [counter])
+                    print('\t', 'MAKE =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                          year[counter], '\n\t',
+                          "MILEAGE =", mileage[counter], '\n\t', 'OLD OWNER =', oldowner[counter], '\n\t',
+                          'ASKING PRICE =', askprice[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                          'STATUS =', available[counter])
+                    counter += 1
+        elif userchoice == '4':
+            # EDIT LISTING
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            counter = 1
+            while counter < len(model):
+                print('CAR ID', [counter])
+                print('\t', 'MAKE =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                      year[counter], '\n\t',
+                      "MILEAGE =", mileage[counter], '\n\t', 'OLD OWNER =', oldowner[counter], '\n\t',
+                      'ASKING PRICE =', askprice[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                      'STATUS =', available[counter])
+                counter += 1
+            Products = int(input('Please enter the number associated with the vehicle to be edited: '))
+            products1 = input("make")
+            products2 = input('model')
+            products3 = input("year")
+            products4 = input("mileage")
+            products5 = input("old owner")
+            products6 = int(input('Asking Price'))
+            products7 = int(input(" Selling Price -"))
+            products8 = input('availability')
+            if Products - 2 > len(model):
+                print('This is an invalid number')
             else:
-                print("No vehicles available for this range")
-
-
-    def sort_mileage():
-        mil_min = int(input("Enter the minimum mileage that you want to sort:  "))
-        mil_max = int(input("Enter the maximum mileage that you want to sort:  "))
-
-        car_details = open("Car Details.txt", "r")
-
-        ind = []
-        mi = []
-
-        for i in car_details:
-            ab, bc, cd, de, ef, fg, gh, hi = i.split(" , ")
-            ind.append(int(ab))
-            mi.append(int(de))
-
-        for j in mi:
-            if mil_min <= j <= mil_max:
-                print(j, mi.index(j))
-                for k in ind:
-                    if mi.index(j) == ind.index(k):
-                        print(ind.index(k) + 1)
-                        av = "Available"
-                        so = "Sold"
-
-                        car_details = open("Car Details.txt", "r")
-
-                        for w in car_details:
-                            d, e, f, g, h, l, m, n = w.split(" , ")
-                            if str(ind.index(k) + 1) == d:
-                                if n.strip() == av:
-                                    print("Index Number: " + d)
-
-                                    print("Car Details")
-                                    print("\tThe make: " + e)
-                                    print("\tModel: " + f)
-                                    print("\tMileage: " + g)
-                                    print("\tColour: " + h)
-                                    print("\tYear: " + l)
-                                    print("\tCondition: " + m)
-
-                                    owner_info = open("Owner Information.txt", "r")
-
-                                    for x in owner_info:
-                                        s, t, u, v = x.split(" , ")
-                                        if s == d:
-                                            print("Owner Details")
-                                            print("\tOwner Name: " + t)
-                                            print("\tOwner Contact Number: " + u)
-                                            print("\tOwner City: " + v)
-
-                                            pricing_info = open("Car Pricing Details.txt", "r")
-
-                                            for y in pricing_info:
-                                                o, p, q = y.split(" , ")
-                                                if o == d:
-                                                    print("Pricing Details")
-                                                    print("\tSelling Price: " + q)
-
-
-    def buy_car():
-        buyer_info = open("Buyer Information.txt", "a")
-
-        name = input("Your Name: ")
-        contact = input("Contact number: ")
-        nic = input("NIC Number: ")
-        car_index = input("Enter the index number of car: ")
-        model_of_car = input("Enter the model: ")
-        # payment details
-
-        if len(name and contact and nic and car_index and model_of_car) < 1:
-            print("Error Try again")
-        else:
-            buyer_info.write(name + " , " + contact + " , " + nic + " , " + car_index + "\n")
-            print("You have successfully purchased your car. Enjoy your Ride!")
-
-        maintain = int(input("Do you want to maintained or serviced your car?\n\t1.YES\n\t2.NO"))
-        if maintain == 1:
-            request_maintain()
-        elif maintain == 2:
-            print("Thank you fpr choosing us! Enjoy your Ride!")
-        else:
-            print("Invalid input")
-
-
-    def request_maintain():
-        maintain = open("Requests for Maintain.txt", "a")
-
-        ind = input("Index Number of the car: ")
-        customer_name = input("Enter your name: ")
-        customer_contact = input("Enter your contact number: ")
-        customer_id = int(input("Enter your NIC number: "))
-
-        if len(ind and customer_name and customer_contact) < 1:
-            print("Something went wrong please try again.")
-        else:
-            maintain.write(ind + " , " + customer_name + " , " + customer_contact + " , " + str(customer_id) + "\n")
-            print(
-                "Your request successfully added! You can check the status while the technician respond to your request.")
-
-
-    def maintenance_status():
-        maintain = open("Requests for Maintain.txt", "r")
-        m_id = []
-
-        for k in maintain:
-            p, q, r, s = k.split(" , ")
-            m_id.append(int(s.strip()))
-
-        allow_maintain = open("Allow Maintain.txt", "a")
-        a_id = []
-        a_allow = []
-
-        for i in allow_maintain:
-            a, b = i.split(" , ")
-            a_id.append(int(a))
-            a_allow.append(b.strip())
-
-        not_allow_maintain = open("Not allowed Maintain.txt", "a")
-        n_id = []
-        n_allow = []
-
-        for j in not_allow_maintain:
-            c, d = j.split(" , ")
-            n_id.append(int(c))
-            n_allow.append(d.strip())
-
-        checking_nic = int(input("Enter your NIC number: "))
-        if checking_nic in m_id:
-            if checking_nic in a_id:
-                print("Technician has provide you an appointment")
-            elif checking_nic in n_id:
-                print("Technician has rejected your request.")
+                del make[Products]
+                del model[Products]
+                del year[Products]
+                del mileage[Products]
+                del oldowner[Products]
+                del askprice[Products]
+                del sellprice[Products]
+                del available[Products]
+                make.insert(Products, products1)
+                model.insert(Products, products2)
+                year.insert(Products, products3)
+                mileage.insert(Products, products4)
+                oldowner.insert(Products, products5)
+                askprice.insert(Products, products6)
+                sellprice.insert(Products, products7)
+                available.insert(Products, products8)
+                print('-----------------------------')
+                print('This vehicle has been updated')
+                print('-----------------------------')
+        elif userchoice == '5':
+            # EXPORT CAR LIST
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            from itertools import zip_longest
+            d = [make, model, year, mileage, oldowner, askprice, sellprice, available]
+            data = zip_longest(*d, fillvalue='')
+            with open('CAR LIST.csv', 'w', newline='') as myfile:
+                wr = csv.writer(myfile)
+                wr.writerow(("MAKE", "MODEL", 'YEAR', 'MILEAGE', 'OLD OWNER', 'ASK PRICE', 'SELL PRICE', 'AVAILABILITY'))
+                wr.writerows(data)
+            myfile.close()
+            print('The vehicle inventory has been exported to a file')
+        elif userchoice == '6':
+            # EXPORT CAR LIST
+            if len(model) < 2:
+                print('Sorry there are no customer information ')
+                continue
+            from itertools import zip_longest
+            telecopy = [str(x) for x in buyertele1]
+            d = [buyername1, telecopy, buyeraddress,carid]
+            data = zip_longest(*d, fillvalue='')
+            with open('CUSTOMER DATA.csv', 'w', newline='') as myfile:
+                wr = csv.writer(myfile)
+                wr.writerow(("NAME", "TELEPHONE", 'ADDRESS', 'CAR ID'))
+                wr.writerows(data)
+            myfile.close()
+            print('The vehicle inventory has been exported to a file')
+        elif userchoice == '7':
+            # VIEW REQUESTED TEST DRIVES
+            if len(buyername) < 2:
+                print('Sorry there are no test drive request currently ')
+                continue
+            counter = 1
+            while counter < len(buyername):
+                print('Customer id', [counter])
+                print('\t', 'NAME =', buyername[counter], '\n\t', 'TELEPHONE =', buyertele[counter], '\n\t',
+                      'REQUESTED CAR =',
+                      buyertest[counter], '\n\t',
+                      "APPOINTMENT =", appointment[counter])
+                counter += 1
+        elif userchoice == '8':
+            # GIVE APPOINTMENT
+            if len(buyername) < 2:
+                print('Sorry there are no test drive request currently ')
+                continue
+            counter = 1
+            while counter < len(buyername):
+                print('Customer id', [counter])
+                print('\t', 'NAME =', buyername[counter], '\n\t', 'TELEPHONE =', buyertele[counter], '\n\t',
+                      'REQUESTED CAR =',
+                      buyertest[counter], '\n\t',
+                      "APPOINTMENT =", appointment[counter])
+                counter += 1
+            Products = int(input('Please enter the number associated with the customer to add appointment: '))
+            products = input("please enter appointment details")
+            if Products - 2 > len(buyername):
+                print('This is an invalid number')
             else:
-                print("Your request is pending...")
+                del appointment[Products]
+                appointment.insert(Products, products)
+                print('appointment added')
+        elif userchoice == '9':
+            # EXPORT CAR LIST
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            else:
+                f = open('CAR LIST.csv', 'r')
+                with f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        print(row)
+        elif userchoice == '10':
+            # CLOSE DEAL
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            counter = 1
+            while counter < len(model):
+                print('CAR ID', [counter])
+                print('\t', 'MAKE =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                      year[counter], '\n\t',
+                      "MILEAGE =", mileage[counter], '\n\t', 'OLD OWNER =', oldowner[counter], '\n\t',
+                      'ASKING PRICE =', askprice[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                      'STATUS =', available[counter])
+                counter += 1
+            Products = int(input('Please enter the number associated with the vehicle to be edited : '))
+            products = int(input('Enter Month -'))
+            products1 = '~ SOLD ~'
+            if Products - 2 > len(model):
+                print('This is an invalid number')
+            else:
+                x = askprice[Products]
+                y = sellprice[Products]
+                z = y - x
+                profit[products].append(z)
+                available.insert(Products, products1)
+                print('Profit(monthly) =', prof(profit[products]))
+                print('-----------------------------')
+                print('This vehicle has been updated')
+                print('-----------------------------')
+    elif User_Choice == "2":
+        # CUSTOMER MENU
+        print('Choice 1: Request Test Drive')
+        print('Choice 2: View Store')
+        print('Choice 3: Buy Car')
+        print('Choice 4: View Status Of Requested Test Drives')
+        print('Choice 5: View Status Of Maintenance')
+        print('Back To Main Menu')
+        userchoice = input(
+            '------------------------------------------------------\nPlease Enter your Choice from '
+            'one of '
+            'the above options|- ')
+        if userchoice == "1":
+            # REQUEST A TEST DRIVE
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            counter = 0
+            while counter < len(model):
+                print('Customer id', [counter])
+                print('\t', 'NAME =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                      year[counter], '\n\t',
+                      "MILEAGE =", mileage[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                      'STATUS =', available[counter])
+                counter += 1
+            buyertest.append(input("Car id of test drive -"))
+            buyername.append(input("Name -"))
+            buyertele.append(input("Telephone -"))
+            print('Your Request Has Been Made')
+        elif userchoice == '2':
+            # STORE AND SORT IF NEEDED
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            counter = 0
+            while counter < len(model):
+                print('Car id', [counter])
+                print('\t', 'NAME =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                      year[counter], '\n\t',
+                      "MILEAGE =", mileage[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                      'STATUS =', available[counter])
+                counter += 1
+            print('Do You Want To Sort?')
+            print('1.Yes\n2.No')
+            choice = input('-')
+            if choice == '1':
+                print('Select Sort Method\n1.By Price\n2.By Mileage')
+                x = input('-')
+                if x == '1':
+                    sortcarid = carid.copy()
+                    sortsellprice = sellprice.copy()
+                    sortmake = make.copy()
+                    sortmodel = model.copy()
+                    sortyear = year.copy()
+                    sortmileage = mileage.copy()
+                    sortavailable = available.copy()
+                    neworder = list(zip(sortmake, sortsellprice, sortmodel, sortyear, sortmileage, sortavailable))
+                    l = len(neworder)
+                    for i in range(0, l):
+                        for k in range(0, l - i - 1):
+                            if (neworder[k][1] > neworder[k + 1][1]):
+                                temporder = neworder[k]
+                                neworder[k] = neworder[k + 1]
+                                neworder[k + 1] = temporder
+                    for ma, se, mo, ye, mi, av in neworder:
+                        print(f'Make: {ma}')
+                        print(f'Model: {mo}')
+                        print(f'Year: {ye}')
+                        print(f'Mileage: {mi}')
+                        print(f'Price: {se}')
+                        print(f'Status: {av}')
+                        print(' \n-----------------\n ')
+                if x == '2':
+                    sortcarid = carid.copy()
+                    sortsellprice = sellprice.copy()
+                    sortmake = make.copy()
+                    sortmodel = model.copy()
+                    sortyear = year.copy()
+                    sortmileage = mileage.copy()
+                    sortavailable = available.copy()
+                    neworder = list(zip(sortmake, sortmileage, sortmodel, sortyear, sortsellprice, sortavailable))
+                    l = len(neworder)
+                    for i in range(0, l):
+                        for k in range(0, l - i - 1):
+                            if (neworder[k][1] > neworder[k + 1][1]):
+                                temporder = neworder[k]
+                                neworder[k] = neworder[k + 1]
+                                neworder[k + 1] = temporder
+                    for ma, mi, mo, ye, se, av in neworder:
+                        print(f'Make: {ma}')
+                        print(f'Model: {mo}')
+                        print(f'Year: {ye}')
+                        print(f'Mileage: {mi}')
+                        print(f'Price: {se}')
+                        print(f'Status: {av}')
+                        print(' \n-----------------\n ')
+            if choice == '2':
+                print('-----------------')
+            else:
+                print("Please Try Again")
+        elif userchoice == '3':
+            # BUY CAR
+            if len(model) < 2:
+                print('Sorry there are no vehicles currently in inventory')
+                continue
+            counter = 0
+            while counter < len(model):
+                print('Customer id', [counter])
+                print('\t', 'NAME =', make[counter], '\n\t', 'MODEL =', model[counter], '\n\t', 'YEAR =',
+                      year[counter], '\n\t',
+                      "MILEAGE =", mileage[counter], '\n\t', 'PRICE =', sellprice[counter], '\n\t',
+                      'STATUS =', available[counter])
+                counter += 1
+            Products = int(input('Please enter the number associated with the vehicle to be buy: '))
+            products = input("please enter your name")
+            products1 = int(input('please enter phone number'))
+            products2 = input('please enter your address')
+            if Products - 2 > len(model):
+                print('This is an invalid number')
+            else:
+                del available[Products]
+                available.insert(Products, "~RESERVED~")
+                buyername1.append( products)
+                buyertele1.append( products1)
+                buyeraddress.append(products2)
+                carid.insert(Products, Products)
+                x = input("do you need service for this car?\n 1.Yes|2.No")
+                if x == "1":
+                    buyermaintain.insert(Products,[ products, products1, Products])
+                    count.append('1')
+                    print('---Your Order Has Been Received----')
+                    print('---Admin Will Confirm Your Order Soon---')
+                    print('---Thank you---')
+                elif x == "2":
+                    print('---Your Order Has Been Received----')
+                    print('---Admin Will Confirm Your Order Soon---')
+                    print('---Thank you---')
+                else:
+                    print('invalid number')
+        elif userchoice == '4':
+            # VIEW STATUS OF REQUESTED TEST DRIVE
+            if len(buyername) < 1:
+                print('Sorry there are no test drive requests currently')
+                continue
+            counter = 1
+            while counter < len(buyername):
+                print('Customer id', [counter])
+                print('\t', 'NAME =', buyername[counter], '\n\t', 'TELEPHONE =', buyertele[counter], '\n\t', 'STATUS =',
+                      appointment[counter])
+                counter += 1
+        elif userchoice == '5':
+            # VIEW STATUS OF MAINTENANCE
+            if len(count) < 2:
+                print('Sorry there are service requests currently')
+                continue
+            counter = 1
+            while counter < len(count):
+                print('Customer id', [counter])
+                print('\t', 'CUSTOMER AND CAR DETAILS =', buyermaintain[counter], '\n', '\t', 'MAINTENANCE REPORT =',
+                      buyermaintain1[counter], '\n', '\t', 'COST =', maintaincost[counter])
+                counter += 1
         else:
-            print("Please request an appointment")
+            print('Invalid Input')
+    elif User_Choice == "3":
+        # TECHNICIAN MENU
+        print('Choice 1: View Requested Services')
+        print('Choice 2: Add Maintenance Report And Cost')
+        print('Choice 3: Main Menu')
+        userchoice = input(
+            '------------------------------------------------------\nPlease Enter your Choice from '
+            'one of '
+            'the above options|- ')
+        if userchoice == '1':
+            # VIEW REQUESTED MAINTENANCE SERVICES
+            if len(count) < 2:
+                print('Sorry there are service requests currently')
+                continue
+            counter = 0
+            while counter < len(count):
+                print('Order Number', [counter])
+                print('\t', 'CUSTOMER AND CAR DETAILS\n\t(name,telephone,car id) =', buyermaintain[counter], '\n', '\t', 'MAINTENANCE REPORT =',
+                      buyermaintain1[counter])
+                counter += 1
+        elif userchoice == '2':
+            # ADD REPORT AND MAINTENANCE COST
+            if len(count) < 2:
+                print('Sorry there are maintain requests currently')
+                continue
+            counter = 1
+            while counter < len(count):
+                print('Order Number', [counter])
+                print('\t', 'CUSTOMER AND CAR DETAILS\n\t(name,telephone,car id) =', buyermaintain[counter], '\n', '\t', 'MAINTENANCE REPORT =',
+                      buyermaintain1[counter], '\n', '\t', 'COST =', maintaincost[counter])
+                counter += 1
+            if len(count) < 1:
+                print('Sorry there are no request currently')
+                continue
+            edit = int(input('Order Number To Edit'))
+            edit1 = input('Enter Your Report')
+            edit2 = int(input('Enter Month'))
+            edit3 = int(input('Add Maintenance Cost'))
+            buyermaintain1.insert(edit, edit1)
+            maintaincost.insert(edit, edit3)
+            profit1[edit2].append(edit3)
+        elif userchoice == '3':
+            print('bye')
 
-
-    def check_maintain_app():
-        maintain = open("Requests for Maintain.txt", "r")
-
-        ind = []
-        name = []
-        id = []
-
-        for i in maintain:
-            a, b, c, d = i.split(" , ")
-            ind.append(a)
-            name.append(b)
-            id.append(int(d.strip()))
-
-            if len(id) != 0:
-                print(len(id), "appointments requested."),
-                print("Car index number: " + a),
-                print("Requestor's name: " + b),
-                print("Requestor's contact number: " + c),
-                print("Requestor's NIC number: " + d)
-
-
-    def allow_maintains():
-        maintain = open("Requests for Maintain.txt", "r")
-
-        allow_maintain = open("Allow Maintain.txt", "a")
-
-        not_allow_maintain = open("Not allowed Maintain.txt", "a")
-
-        nic = []
-        for j in maintain:
-            a, b, c, d = j.split(" , ")
-            nic.append(int(d.strip()))
-
-        checking_id = int(input("Enter the requestor NIC number: "))
-        if checking_id in nic:
-            allow = int(input("Do you want to allow this maintain request?\n\t1.Yes\n\t2.No\n"))
-            if allow == 1:
-                allow_maintain.write(str(checking_id) + " , " + "YES")
-            elif allow == 2:
-                not_allow_maintain.write(str(checking_id) + " , " + "NO")
-
-
-    def technician():
-        print("1. Check appointments")
-        print("2. Add Maintenance Information")
-        print("3. Allow maintain")
-
-        select = int(input("Enter your choice: "))
-
-        if select == 1:
-            check_maintain_app()
-        elif select == 2:
-            add_maintenace_info()
-        elif select == 3:
-            allow_maintains()
-        else:
-            print("Invalid input")
-
-
-    def add_maintenace_info():
-        maintain_info = open("Maintained Information.txt", "a")
-
-        car_index = input("Enter the car index: ")
-        description = input("Enter the Maintenance description: ")
-        cost = input("Enter the cost: Rs: ")
-
-        maintain_info.write(car_index + " , " + description + " , " + cost + "\n")
-
-
-    def owner():
-        print("1. Generate Report")
-        print("2. Add Maintained Report")
-        print("3. Main Menu")
-
-        select = int(input("Enter your choice: "))
-
-
-    def best_selling_model():
-        buyer_info = open("Buyer Information.txt", "r")
-
-        car_index = []
-
-        mo = []  # model list
-
-        for i in buyer_info:
-            p, q, r, s, t = i.split(" , ")
-            car_index.append(int(s.strip))
-            mo.append(t.srip())
-
-        ele = {}
-        for j in mo:
-            ele[j] = mo.count(j)
-
-        print(ele)
-
-
-    options()
+    elif User_Choice == "4":
+        # OWNER MENU
+        print('Choice 1: Generate Report')
+        print('Choice 2: Add Maintained Report')
+        print('Choice 3: Main Menu')
+        userchoice = input(
+            '------------------------------------------------------\nPlease Enter your Choice from '
+            'one of '
+            'the above options|- ')
+        if userchoice == '1':
+            print(' ~ Profit By Car Sales ~')
+            print(' January   -', prof(profit[1]))
+            print(' February  -', prof(profit[2]))
+            print(' March     -', prof(profit[3]))
+            print(' April     -', prof(profit[4]))
+            print(' May       -', prof(profit[5]))
+            print(' June      -', prof(profit[6]))
+            print(' July      -', prof(profit[7]))
+            print(' August    -', prof(profit[8]))
+            print(' September -', prof(profit[9]))
+            print(' October   -', prof(profit[10]))
+            print(' November  -', prof(profit[11]))
+            print(' December  -', prof(profit[12]))
+            print('-----------------------------')
+            print(' PROFIT  =', prof(profit),'\n-----------------------------\n\n')
+            print(' ~ Profit By Services ~')
+            print(' January   -', prof(profit1[1]))
+            print(' February  -', prof(profit1[2]))
+            print(' March     -', prof(profit1[3]))
+            print(' April     -', prof(profit1[4]))
+            print(' May       -', prof(profit1[5]))
+            print(' June      -', prof(profit1[6]))
+            print(' July      -', prof(profit1[7]))
+            print(' August    -', prof(profit1[8]))
+            print(' September -', prof(profit1[9]))
+            print(' October   -', prof(profit1[10]))
+            print(' November  -', prof(profit1[11]))
+            print(' December  -', prof(profit1[12]))
+            print('---------------------------------')
+            print(' PROFIT  =', prof(profit1),
+                  '\n---------------------------------\n\n')
+            print(' ~ Total Profit Monthly ~')
+            mothly = [x + y for x, y in zip(profit, profit1)]
+            print(' January   -', prof(mothly[1]))
+            print(' February  -', prof(mothly[2]))
+            print(' March     -', prof(mothly[3]))
+            print(' April     -', prof(mothly[4]))
+            print(' May       -', prof(mothly[5]))
+            print(' June      -', prof(mothly[6]))
+            print(' July      -', prof(mothly[7]))
+            print(' August    -', prof(mothly[8]))
+            print(' September -', prof(mothly[9]))
+            print(' October   -', prof(mothly[10]))
+            print(' November  -', prof(mothly[11]))
+            print(' December  -', prof(mothly[12]))
+            print('------------------------------')
+            print('   TOTAL ANNUAL PROFIT  = ', prof(profit) + prof(profit1), '\n------------------------------\n\n')
+            print(' ~ Total Profit ~')
+            print('Car Sales Profit = ',prof(profit))
+            print('Services Profit  = ', prof(profit1))
+            print('-----------------------------')
+            print('   TOTAL PROFIT  = ',prof(profit)+prof(profit1),'\n-----------------------------\n\n')
+            print(' ~ Most Sold Models ~ ')
+            from collections import Counter
+            c = Counter(model1)
+            c.most_common(5)
+            print("", c.most_common(5))
+            x = c.most_common(5)
+            for x in x:
+                print(x)
