@@ -1,0 +1,8 @@
+1 , Germany , Bmw i8 , 25000 , White , 2017 , Used , Sold
+2 , Germany , Audi a6 , 26000 , Black , 2016 , Used , Available
+3 , Japan , Toyota premio , 100 , White , 2021 , Brandnew , Sold
+4 , Japan , Subaru wrx , 20000 , Blue , 2014 , Used , Available
+5 , Japan , Mitsubishi lancer , 10000 , Red , 2018 , Used , Available
+6 , Italian , Giulia , 150 , Meroon , 2016 , Brand new , Available
+7 , Japan , Mitsubishi lancer montero , 100 , White , 2021 , Brand new , Available
+8 , South korea , Aqua , 234656km , White , 2018 , New , Available9 , Japan , Bmw , 2984 , White , 2017 , New , Available
